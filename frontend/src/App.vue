@@ -1,0 +1,62 @@
+<template>
+  <v-app id="app">
+    <v-navigation-drawer v-model="drawer" app clipped>
+      <v-list dense>
+        <v-subheader class="mt-4 grey--text text--darken-1"
+          >카테고리</v-subheader
+        >
+        <v-list>
+          <v-list-item v-for="item in categories" :key="item.text" link>
+            <v-list-item-avatar>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title v-text="item.text" />
+          </v-list-item>
+        </v-list>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar app clipped-left color="indigo" dense>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title class="mr-12 align-center">
+        <a
+          class="title white--text"
+          style="text-decoration: none !important"
+          href="/"
+          >Joodemy</a
+        >
+      </v-toolbar-title>
+      <v-spacer />
+      <v-app-bar-nav-icon>
+        <v-icon class="white--text">
+          mdi-account
+        </v-icon>
+      </v-app-bar-nav-icon>
+    </v-app-bar>
+
+    <v-content>
+      <router-view :tester="goood"></router-view>
+    </v-content>
+  </v-app>
+</template>
+
+<script>
+export default {
+  name: "App",
+  components: {},
+  data: () => ({
+    drawer: null,
+    categories: [
+      { icon: "mdi-dev-to", text: "개발" },
+      { icon: "mdi-domain", text: "비즈니스" },
+      { icon: "mdi-folder-account", text: "재무 및 회계" },
+      { icon: "mdi-laptop", text: "IT 및 소프트웨어" },
+      { icon: "mdi-book-open-outline", text: "자기 계발" },
+      { icon: "mdi-lead-pencil", text: "디자인" },
+      { icon: "mdi-dog-service", text: "라이프스타일" },
+      { icon: "mdi-camera", text: "사진" },
+      { icon: "mdi-music", text: "음악" },
+    ],
+  }),
+};
+</script>
