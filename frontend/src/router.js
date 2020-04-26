@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 
 import main from "./components/main";
 import course from "./components/course";
+import video from "./components/video";
+import upload from "./components/upload";
 
 Vue.use(VueRouter);
 
@@ -16,6 +18,14 @@ export default new VueRouter({
     {
       path: "/courses/:id",
       component: course,
+    },
+    {
+      path: "/videos/:id",
+      component: video,
+    },
+    {
+      path: "/upload",
+      component: upload,
     },
   ],
 });

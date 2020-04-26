@@ -2,9 +2,7 @@
   <v-app id="app">
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
-        <v-subheader class="mt-4 grey--text text--darken-1"
-          >카테고리</v-subheader
-        >
+        <v-subheader class="mt-4 grey--text text--darken-1">카테고리</v-subheader>
         <v-list>
           <v-list-item v-for="item in categories" :key="item.text" link>
             <v-list-item-avatar>
@@ -19,18 +17,11 @@
     <v-app-bar app clipped-left color="indigo" dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="mr-12 align-center">
-        <a
-          class="title white--text"
-          style="text-decoration: none !important"
-          href="/"
-          >Joodemy</a
-        >
+        <a class="title white--text" style="text-decoration: none !important" href="/">Joodemy</a>
       </v-toolbar-title>
       <v-spacer />
       <v-app-bar-nav-icon>
-        <v-icon class="white--text">
-          mdi-account
-        </v-icon>
+        <v-icon class="white--text">mdi-account</v-icon>
       </v-app-bar-nav-icon>
     </v-app-bar>
 
@@ -47,6 +38,7 @@ export default {
   data: () => ({
     drawer: null,
     categories: [
+      { icon: "mdi-home", text: "Home" },
       { icon: "mdi-dev-to", text: "개발" },
       { icon: "mdi-domain", text: "비즈니스" },
       { icon: "mdi-folder-account", text: "재무 및 회계" },
@@ -55,8 +47,8 @@ export default {
       { icon: "mdi-lead-pencil", text: "디자인" },
       { icon: "mdi-dog-service", text: "라이프스타일" },
       { icon: "mdi-camera", text: "사진" },
-      { icon: "mdi-music", text: "음악" },
-    ],
-  }),
+      { icon: "mdi-music", text: "음악" }
+    ]
+  })
 };
 </script>
