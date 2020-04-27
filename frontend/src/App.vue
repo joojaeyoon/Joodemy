@@ -20,7 +20,10 @@
         <a class="title white--text" style="text-decoration: none !important" href="/">Joodemy</a>
       </v-toolbar-title>
       <v-spacer />
-      <v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="clickUpload">
+        <v-icon class="white--text">mdi-upload</v-icon>
+      </v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="clickProfile">
         <v-icon class="white--text">mdi-account</v-icon>
       </v-app-bar-nav-icon>
     </v-app-bar>
@@ -32,6 +35,8 @@
 </template>
 
 <script>
+import router from "./router";
+
 export default {
   name: "App",
   components: {},
@@ -49,6 +54,14 @@ export default {
       { icon: "mdi-camera", text: "사진" },
       { icon: "mdi-music", text: "음악" }
     ]
-  })
+  }),
+  methods: {
+    clickUpload() {
+      router.push("/upload");
+    },
+    clickProfile() {
+      router.push("/profile");
+    }
+  }
 };
 </script>
