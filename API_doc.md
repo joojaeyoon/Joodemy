@@ -71,3 +71,43 @@ GET /api/contents/<course_id>
   }
 ]
 ```
+
+### 3. Review List
+
+```
+GET /api/review/<course_id>
+```
+
+##### Parameters
+
+| Parameter | Types | Description                 |
+| :-------- | :---- | :-------------------------- |
+| course_id | int   | (필수) 조회하려는 강의의 id |
+
+##### Response Body
+
+```json
+[
+  {
+    "id": 1,
+    "user": "Joo",
+    "text": "Awesome!",
+    "rating": "5",
+    "created_at": ""
+  },
+  {
+    "id": 2,
+    "user": "Kim",
+    "text": "Great Course",
+    "rating": "5",
+    "created_at": ""
+  },
+  {
+    "id": 3,
+    "user": "Park",
+    "text": "Awesome!",
+    "rating": "5",
+    "created_at": ""
+  }
+]
+```

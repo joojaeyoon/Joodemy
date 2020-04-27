@@ -13,7 +13,7 @@
     <v-container class="d-flex">
       <v-card width="80%" class="mr-3" elevation="12">
         <v-list two-line>
-          <v-container class="pa-0" v-for="c in course.classes" :key="c.id">
+          <v-container class="pa-0" v-for="c in course.contents" :key="c.id">
             <v-list-item link>
               <v-list-item-avatar>
                 <v-icon>mdi-arrow-right-drop-circle-outline</v-icon>
@@ -54,7 +54,7 @@ export default {
       instructor: "Joo",
       price: "19.99$",
 
-      classes: [
+      contents: [
         { id: 1, title: "First class", time: "03:48" },
         { id: 2, title: "Second class", time: "05:22" },
         { id: 3, title: "Third class", time: "04:54" }
