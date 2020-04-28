@@ -21,6 +21,8 @@ class TestCourse(APITestCase):
                                              title="test course2", description="desciption",
                                              price=29.99, img="http://test.jpg")
 
+        self.client.force_authenticate(user=self.user)
+
     def test_get_course_list(self):
         """ 강의 리스트 API """
 
@@ -52,7 +54,7 @@ class TestCourse(APITestCase):
     def test_delete_course(self):
         """ 강의 삭제 API """
 
-        url = "/api/courses/"+str(self.course2.id)
+        url = "/api/courses/"+str(self.course2.id)+"/"
 
         res = self.client.delete(url)
 
