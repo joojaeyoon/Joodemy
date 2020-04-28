@@ -4,7 +4,6 @@ from accounts.models import User, Student, Instructor
 
 
 class UserSerializer(serializers.ModelSerializer):
-    is_instructor = serializers.BooleanField(default=False)
 
     class Meta:
         model = User

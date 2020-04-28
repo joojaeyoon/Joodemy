@@ -25,9 +25,13 @@ class TestUser(APITestCase):
 
         res = self.client.post(url, payload)
 
+        print(res.data)
+
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(res.data["username"], "test_user")
-        self.assertEqual(res.data["email"], "test@gmail.com")
+        self.assertEqual(res.data["user"]["username"], "test_user")
+        self.assertEqual(res.data["user"]["email"], "test@gmail.com")
+
+        self.assertIsNotNone(res.data["token"])
 
     def test_login_user(self):
         """ 유저 로그인 API 테스트 """
