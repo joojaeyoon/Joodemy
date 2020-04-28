@@ -31,10 +31,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     'rest_auth',
-    'rest_auth.registration',
 
     'accounts',
-    'course'
+    'course',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -121,3 +121,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = "accounts.User"
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication"
+    )
+}
+
+REST_USE_JWT = True
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "api.accounts.serializers.UserSerializer"
+}
