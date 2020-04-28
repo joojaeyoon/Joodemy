@@ -5,6 +5,15 @@ from course.models import Course, Content, Review
 
 class CourseSerializer(serializers.ModelSerializer):
 
+    instructor = serializers.StringRelatedField()
+
+    class Meta:
+        model = Course
+        fields = ("instructor", "title", "description", "price", "img")
+
+
+class CourseCreateSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Course
         fields = ("instructor", "title", "description", "price", "img")
