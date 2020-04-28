@@ -13,6 +13,9 @@ class Course(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Content(models.Model):
     course = models.ForeignKey(
@@ -24,6 +27,9 @@ class Content(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Review(models.Model):
     course = models.ForeignKey(
@@ -34,3 +40,6 @@ class Review(models.Model):
     text = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
