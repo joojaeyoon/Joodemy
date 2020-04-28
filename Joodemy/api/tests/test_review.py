@@ -1,7 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 
-from accounts import User, Instructor
+from accounts.models import User, Instructor
 from course.models import Course, Review
 
 
@@ -11,7 +11,7 @@ class TestReview(APITestCase):
         self.user = User.objects.create_user(
             username="test_instructor", email="test@test.com", password="password", is_instructor=True
         )
-        self.user2 = User.ojbects.create_user(
+        self.user2 = User.objects.create_user(
             username="review user", email="review@review.com", password="password"
         )
         self.instructor = Instructor.objects.filter(user=self.user)[0]
@@ -41,7 +41,7 @@ class TestReview(APITestCase):
         res = self.client.get(url, payload)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.aseertEqual(len(res.data), 2)
+        self.assertEqual(len(res.data), 2)
 
     def test_create_review(self):
         """ 리뷰 생성 API 테스트 """
@@ -56,3 +56,7 @@ class TestReview(APITestCase):
         }
 
         res = self.client.post(url, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(res.data["course"], self.course.title)
+        self.assertEqual(res.data["user"], self.user.username)

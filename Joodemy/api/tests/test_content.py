@@ -46,9 +46,11 @@ class TestContent(APITestCase):
 
         payload = {
             "course": self.course.id, "title": "test_content",
-            "video": "http://video.mp4", "time": "14:24"
+            "video": "http://jooz.dev/video.mp4", "time": "14:24"
         }
 
         res = self.client.post(url, payload)
+
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertEqual(res.data["title"], "test_content")
+        self.assertEqual(res.data["course"], self.course.title)
