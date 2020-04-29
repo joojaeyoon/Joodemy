@@ -2,6 +2,14 @@ from django.db import models
 from accounts.models import Instructor, User
 
 
+class Image(models.Model):
+    image = models.ImageField()
+
+
+class Video(models.Model):
+    video = models.FileField()
+
+
 class Course(models.Model):
     instructor = models.ForeignKey(
         Instructor, on_delete=models.CASCADE, related_name="courses")

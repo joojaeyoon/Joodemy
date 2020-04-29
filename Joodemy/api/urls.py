@@ -4,6 +4,7 @@ from rest_framework import routers
 
 from .accounts.views import *
 from .course.views import *
+from .upload.views import *
 
 router = routers.DefaultRouter()
 router.register(r"^", UserRegistrationViewSet)
@@ -19,5 +20,7 @@ app_name = "api"
 urlpatterns = [
     path("auth/registration", include(router.urls)),
     path("auth/", include("rest_auth.urls")),
+    path("upload/image/", ImageUploadView.as_view()),
+    path("upload/video/", VideoUploadView.as_view()),
     path("", include(course_router.urls)),
 ]
