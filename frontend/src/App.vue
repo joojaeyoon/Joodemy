@@ -20,10 +20,20 @@
         <a class="title white--text" style="text-decoration: none !important" href="/">Joodemy</a>
       </v-toolbar-title>
       <v-spacer />
-      <v-app-bar-nav-icon @click="clickUpload">
+
+      <v-dialog v-if="!logged" max-width="600">
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" dark v-on="on">Login</v-btn>
+        </template>
+        <login :login="Login" />
+      </v-dialog>
+
+      <v-btn v-if="logged" color="primary" dark @click="Logout">Logout</v-btn>
+
+      <v-app-bar-nav-icon v-if="logged" @click="clickUpload">
         <v-icon class="white--text">mdi-upload</v-icon>
       </v-app-bar-nav-icon>
-      <v-app-bar-nav-icon @click="clickProfile">
+      <v-app-bar-nav-icon v-if="logged" @click="clickProfile">
         <v-icon class="white--text">mdi-account</v-icon>
       </v-app-bar-nav-icon>
     </v-app-bar>
@@ -36,12 +46,15 @@
 
 <script>
 import router from "./router";
+import login from "./components/login";
+import Axios from "axios";
 
 export default {
   name: "App",
-  components: {},
+  components: { login },
   data: () => ({
     drawer: null,
+    logged: false,
     categories: [
       { icon: "mdi-home", text: "Home" },
       { icon: "mdi-dev-to", text: "개발" },
@@ -61,6 +74,19 @@ export default {
     },
     clickProfile() {
       router.push("/profile");
+    },
+    Login() {
+      this.logged = true;
+    },
+    Logout() {
+      localStorage.removeItem("token");
+      Axios.defaults.headers.common["Authorization"] = "";
+      this.logged = false;
+    }
+  },
+  created() {
+    if (localStorage.getItem("token") != null) {
+      this.Login();
     }
   }
 };
