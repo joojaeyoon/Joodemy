@@ -2,7 +2,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 
 from accounts.models import User, Instructor
-from course.models import Course, Review
+from course.models import Course, Review, Image
 
 
 class TestReview(APITestCase):
@@ -16,9 +16,11 @@ class TestReview(APITestCase):
         )
         self.instructor = Instructor.objects.filter(user=self.user)[0]
 
+        self.image = Image.objects.create()
+
         self.course = Course.objects.create(instructor=self.instructor,
                                             title="test course1", description="desciption",
-                                            price=19.99, img="http://test.jpg")
+                                            price=19.99, img=self.image)
 
         self.review1 = Review.objects.create(
             course=self.course, user=self.user2, rating=5, text="Awesome!!"

@@ -4,7 +4,7 @@ from rest_framework import status
 from django.contrib.auth import get_user_model
 
 from accounts.models import Instructor
-from course.models import Course
+from course.models import Course, Image
 
 
 class TestCourse(APITestCase):
@@ -14,12 +14,14 @@ class TestCourse(APITestCase):
             username="test_instructor", email="test@test.com", password="password", is_instructor=True)
         self.instructor = Instructor.objects.filter(user=self.user)[0]
 
+        self.image = Image.objects.create()
+
         self.course1 = Course.objects.create(instructor=self.instructor,
                                              title="test course1", description="desciption",
-                                             price=19.99, img="http://test.jpg")
+                                             price=19.99, img=self.image)
         self.course2 = Course.objects.create(instructor=self.instructor,
                                              title="test course2", description="desciption",
-                                             price=29.99, img="http://test.jpg")
+                                             price=29.99, img=self.image)
 
         self.client.force_authenticate(user=self.user)
 
@@ -38,12 +40,14 @@ class TestCourse(APITestCase):
 
         url = "/api/courses/"
 
+        img = open("api/tests/test_image.png", "rb")
+
         payload = {
             "instructor": self.instructor.id,
             "title": "test course1",
             "description": "desciption",
             "price": 19.99,
-            "img": "http://test.jpg"
+            "img": img
         }
 
         res = self.client.post(url, payload)
