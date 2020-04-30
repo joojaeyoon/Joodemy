@@ -16,7 +16,7 @@ class Course(models.Model):
     title = models.CharField(max_length=64)
     description = models.TextField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
-    img = models.URLField()
+    img = models.ForeignKey(Image, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -29,7 +29,7 @@ class Content(models.Model):
     course = models.ForeignKey(
         Course, on_delete=models.CASCADE, related_name="contents")
     title = models.CharField(max_length=64)
-    video = models.URLField()
+    video = models.ForeignKey(Video, on_delete=models.CASCADE)
     time = models.TimeField()
 
     created_at = models.DateTimeField(auto_now_add=True)

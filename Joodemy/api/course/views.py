@@ -1,15 +1,24 @@
 from rest_framework import status, viewsets
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from accounts.models import Instructor, User
 from course.models import Content, Course, Review
 
 from .serializers import *
+from ..upload.serializers import *
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+
+    def create_image(self, data):
+        serializer = ImageSerializer(data=data)
+        if serializer.is_valid():
+            return serializer.save()
+        return None
 
     def get_serializer_class(self):
         if self.request.method == "POST":
@@ -19,7 +28,13 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
 
-        serializer = self.get_serializer(data=request.data)
+        data = request.data.copy()
+
+        image = self.create_image({"image": data["img"]})
+
+        data["img"] = image.id
+
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -37,6 +52,13 @@ class CourseViewSet(viewsets.ModelViewSet):
 class ContentViewSet(viewsets.ModelViewSet):
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+
+    def create_video(self, data):
+        serializer = VideoSerializer(data=data)
+        if serializer.is_valid():
+            return serializer.save()
+        return None
 
     def get_serializer_class(self):
         if self.request.method == "POST":
@@ -46,7 +68,13 @@ class ContentViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
 
-        serializer = self.get_serializer(data=request.data)
+        data = request.data.copy()
+
+        video = self.create_video({"video": data["video"]})
+
+        data["video"] = video.id
+
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -64,6 +92,7 @@ class ContentViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
 
     def get_serializer_class(self):
         if self.request.method == "POST":
