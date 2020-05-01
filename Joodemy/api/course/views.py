@@ -32,19 +32,21 @@ class CourseViewSet(viewsets.ModelViewSet):
 
         image = self.create_image({"image": data["img"]})
 
+        user_id = data.get("instructor")
+        instructor = Instructor.objects.filter(
+            user__id=user_id)[0]
+
         data["img"] = image.id
+
+        data["instructor"] = instructor.id
 
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
 
-        i_id = serializer.data["instructor"]
-        username = Instructor.objects.filter(
-            id=i_id)[0].user.username
-
         response = serializer.data.copy()
-        response["instructor"] = username
+        response["instructor"] = instructor.user.username
 
         return Response(response, status=status.HTTP_201_CREATED, headers=headers)
 

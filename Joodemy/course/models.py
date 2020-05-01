@@ -15,7 +15,7 @@ class Course(models.Model):
         Instructor, on_delete=models.CASCADE, related_name="courses")
     title = models.CharField(max_length=64)
     description = models.TextField()
-    price = models.DecimalField(max_digits=5, decimal_places=2)
+    price = models.CharField(max_length=12)
     img = models.ForeignKey(Image, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)

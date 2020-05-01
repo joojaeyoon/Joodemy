@@ -43,7 +43,7 @@ class TestCourse(APITestCase):
         img = open("api/tests/test_image.png", "rb")
 
         payload = {
-            "instructor": self.instructor.id,
+            "instructor": self.user.id,
             "title": "test course1",
             "description": "desciption",
             "price": 19.99,
