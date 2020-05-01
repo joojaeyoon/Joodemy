@@ -6,6 +6,7 @@ import course from "./components/course";
 import video from "./components/video";
 import upload from "./components/upload";
 import login from "./components/login";
+import create from "./components/create";
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,10 @@ export default new VueRouter({
     {
       path: "/login",
       component: login,
+    },
+    {
+      path: "/create",
+      component: create,
     },
   ],
 });

@@ -5,9 +5,15 @@ from accounts.models import Instructor, User
 class Image(models.Model):
     image = models.ImageField()
 
+    def __str__(self):
+        return str(self.image)
+
 
 class Video(models.Model):
     video = models.FileField()
+
+    def __str__(self):
+        return str(self.video)
 
 
 class Course(models.Model):
@@ -30,7 +36,7 @@ class Content(models.Model):
         Course, on_delete=models.CASCADE, related_name="contents")
     title = models.CharField(max_length=64)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
-    time = models.TimeField()
+    time = models.CharField(max_length=12)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

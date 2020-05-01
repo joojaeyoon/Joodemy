@@ -3,7 +3,11 @@
     <v-row>
       <v-col v-for="course in courses" :key="course.id" md="3">
         <v-card class="mx-auto" max-width="400" link v-on:click="clickCourse(course.id)">
-          <v-img class="white--text align-end" height="200px" :src="course.img">
+          <v-img
+            class="white--text align-end"
+            height="200px"
+            :src="'https://joodemy.s3.ap-northeast-2.amazonaws.com/media/public/'+course.img"
+          >
             <v-card-title>{{ course.title }}</v-card-title>
           </v-img>
 
@@ -18,7 +22,7 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn color="orange" text>{{ course.price }}</v-btn>
+            <v-btn color="orange" text>{{ course.price }} $</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -29,31 +33,13 @@
 <script>
 import router from "../router";
 import Axios from "axios";
+import apiUrl from "../url";
 
 export default {
   name: "Main",
 
   data: () => ({
-    courses: [
-      {
-        id: 1,
-        img: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
-        title: "Complete Python Bootcamp: Go from zero to hero in Python3",
-        description:
-          "Learn Python like a Professional! Start from the basics and go all the way to creating your own applications and games!",
-        instructor: "Joo",
-        price: "19.99$"
-      },
-      {
-        id: 2,
-        img: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
-        title: "Complete Python Bootcamp: Go from zero to hero in Python3",
-        description:
-          "Learn Python like a Professional! Start from the basics and go all the way to creating your own applications and games!",
-        instructor: "Joo",
-        price: "19.99$"
-      }
-    ]
+    courses: []
   }),
 
   methods: {
@@ -63,10 +49,10 @@ export default {
   },
   created() {
     Axios({
-      url: "http://localhost:8000/api/courses/",
+      url: `${apiUrl}/api/courses/`,
       method: "GET"
     }).then(res => {
-      console.log(res.data);
+      this.courses = res.data;
     });
   }
 };

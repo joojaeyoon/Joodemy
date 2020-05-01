@@ -72,6 +72,7 @@
 
 <script>
 import axios from "axios";
+import apiUrl from "../url";
 
 export default {
   props: ["login"],
@@ -105,7 +106,7 @@ export default {
     loginValidate() {
       const vaild = this.$refs.loginForm.validate();
       if (vaild) {
-        axios("http://localhost:8000/api/auth/login/", {
+        axios(`${apiUrl}/api/auth/login/`, {
           method: "POST",
           data: {
             username: this.username,
@@ -124,7 +125,7 @@ export default {
     registerValidate() {
       const vaild = this.$refs.registerForm.validate();
       if (vaild) {
-        axios("http://localhost:8000/api/auth/registration/", {
+        axios(`${apiUrl}/api/auth/registration/`, {
           method: "POST",
           data: {
             username: this.username,

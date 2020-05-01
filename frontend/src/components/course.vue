@@ -3,9 +3,9 @@
     <v-carousel :cycle="false" :show-arrows="false" max-width="100%" height="400" hide-delimiters>
       <v-carousel-item>
         <v-sheet color="gray" height="100%">
-          <v-row class="fill-height" align="center" justify="center">
-            <div class="display-1 font-weight-bold">{{ course.title }}</div>
-            <div class="subtitle-1 font-weight-medium">{{ course.description }}</div>
+          <v-row class="fill-height flex-column" align="center" justify="center">
+            <div class="display-3 font-weight-bold">{{ course.title}}</div>
+            <div class="headline font-weight-medium">{{ course.description }}</div>
           </v-row>
         </v-sheet>
       </v-carousel-item>
@@ -28,10 +28,14 @@
         </v-list>
       </v-card>
       <v-card class="mx-auto" max-width="400" elevation="12">
-        <v-img class="white--text align-end" height="200px" :src="course.img">
+        <v-img
+          class="white--text align-end"
+          height="200px"
+          :src="'https://joodemy.s3.ap-northeast-2.amazonaws.com/media/public/'+course.img"
+        >
           <v-card-title>{{ course.title }}</v-card-title>
         </v-img>
-        <v-card-title>{{ course.price }}</v-card-title>
+        <v-card-title>{{ course.price }} $</v-card-title>
 
         <v-card-actions class="flex-column" width="80%">
           <v-btn width="100%" height="60" color="red">장바구니</v-btn>
@@ -43,23 +47,33 @@
 </template>
 
 <script>
+import apiUrl from "../url";
+import Axios from "axios";
+
 export default {
+  props: ["id"],
   data: () => ({
     course: {
       id: 1,
-      img: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
-      title: "Complete Python Bootcamp: Go from zero to hero in Python3",
-      description:
-        "Learn Python like a Professional! Start from the basics and go all the way to creating your own applications and games!",
-      instructor: "Joo",
-      price: "19.99$",
+      img: "1-wjwwex.png",
+      title: "",
+      description: "",
+      instructor: "",
+      price: "",
 
-      contents: [
-        { id: 1, title: "First class", time: "03:48" },
-        { id: 2, title: "Second class", time: "05:22" },
-        { id: 3, title: "Third class", time: "04:54" }
-      ]
+      contents: []
     }
-  })
+  }),
+  created() {
+    const id = this.$route.params.id;
+    Axios({
+      url: `${apiUrl}/api/courses/${id}/`,
+      method: "GET"
+    }).then(res => {
+      if (res.status == 200) {
+        this.course = res.data;
+      }
+    });
+  }
 };
 </script>

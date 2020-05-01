@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from accounts.models import Instructor, User
 from course.models import Content, Course, Review
 
+from ..utils import get_video_time
 from .serializers import *
 from ..upload.serializers import *
 
@@ -25,6 +26,25 @@ class CourseViewSet(viewsets.ModelViewSet):
             return CourseCreateSerializer
 
         return self.serializer_class
+
+    def list(self, request, *args, **kwargs):
+        instructor = request.query_params.get("instructor", None)
+
+        if instructor != None:
+            queryset = self.get_queryset().filter(instructor=instructor)
+        else:
+            queryset = self.get_queryset()
+
+        print(queryset[0].img)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
 
@@ -70,13 +90,13 @@ class ContentViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
 
-        data = request.data.copy()
+        video = self.create_video({"video": request.data["video"]})
 
-        video = self.create_video({"video": data["video"]})
+        request.data["video"] = video.id
+        request.data["course"] = int(request.data["course"])
+        request.data["time"] = get_video_time(str(video.video))
 
-        data["video"] = video.id
-
-        serializer = self.get_serializer(data=data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)

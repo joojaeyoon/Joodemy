@@ -1,41 +1,75 @@
 <template>
   <v-container class="d-flex flex-column align-center mt-10">
-    <v-select :items="courses" label="Select Course"></v-select>
+    <v-select v-model="select" :items="title" label="Select Course"></v-select>
 
-    <v-card v-for="card in cards" :key="card" width="400" class="pa-10 mt-5">
-      <v-text-field :rules="rules" label="title" prepend-icon="mdi-format-title"></v-text-field>
-      <v-file-input show-size label="Upload Video" prepend-icon="mdi-video"></v-file-input>
+    <v-card width="500" class="pa-10 mt-5">
+      <v-text-field
+        v-model="video_title"
+        :rules="rules"
+        label="title"
+        prepend-icon="mdi-format-title"
+      ></v-text-field>
+      <v-file-input
+        class="mt-12"
+        :rules="rules"
+        v-model="video"
+        show-size
+        label="Upload Video"
+        prepend-icon="mdi-video"
+      ></v-file-input>
     </v-card>
-
-    <div class="mt-6">
-      <v-btn color="primary" large @click="clickPlus">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-      <v-btn class="ml-5" color="error" large @click="clickMinus">
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-    </div>
-    <v-btn class="mt-6" color="error" dark large>Upload</v-btn>
+    <v-btn class="mt-6" color="error" dark large @click="uploadVideo">Upload</v-btn>
   </v-container>
 </template>
 
 <script>
+import Axios from "axios";
+import apiUrl from "../url";
+
 export default {
   data: () => ({
-    cards: 1,
-    courses: ["course1", "course2", "course3"],
-    rules: [
-      value => !!value || "Required.",
-      value => (value || "").length <= 20 || "Max 20 characters"
-    ]
+    courses: [],
+    title: [],
+    select: null,
+    video_title: "",
+    video: null,
+    rules: [value => !!value || "Required."]
   }),
   methods: {
-    clickPlus() {
-      this.cards += 1;
-    },
-    clickMinus() {
-      if (this.cards != 1) this.cards -= 1;
+    uploadVideo() {
+      const formData = new FormData();
+      const course = this.courses[Number(this.select.split(" ")[0][0]) - 1];
+
+      formData.append("title", this.video_title);
+      formData.append("video", this.video);
+      formData.append("course", course.id);
+
+      Axios({
+        url: `${apiUrl}/api/contents/`,
+        method: "POST",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(res => {
+        if (res.status == 201) {
+          alert("생성되었습니다.");
+          window.location.href = "/";
+        }
+      });
     }
+  },
+  created() {
+    const instructor = JSON.parse(localStorage.getItem("user"));
+    Axios({
+      url: `${apiUrl}/api/courses/?instructor=${instructor.id}`,
+      method: "GET"
+    }).then(res => {
+      res.data.map((course, idx) => {
+        this.title.push(idx + 1 + ". " + course.title);
+        this.courses.push(course);
+      });
+    });
   }
 };
 </script>

@@ -3,17 +3,6 @@ from rest_framework import serializers
 from course.models import Course, Content, Review
 
 
-class CourseCreateSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Course
-        fields = ("instructor", "title", "description", "price", "img")
-
-
-class CourseSerializer(CourseCreateSerializer):
-    instructor = serializers.StringRelatedField()
-
-
 class ContentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Content
@@ -21,8 +10,27 @@ class ContentCreateSerializer(serializers.ModelSerializer):
 
 
 class ContentSerializer(ContentCreateSerializer):
-
     course = serializers.StringRelatedField()
+    video = serializers.StringRelatedField()
+
+
+class CourseCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Course
+        fields = ("id", "instructor", "title", "description", "price", "img")
+
+
+class CourseSerializer(serializers.ModelSerializer):
+    instructor = serializers.StringRelatedField()
+    img = serializers.StringRelatedField()
+
+    contents = ContentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Course
+        fields = ("id", "instructor", "title",
+                  "description", "price", "img", "contents")
 
 
 class ReviewCreateSerializer(serializers.ModelSerializer):
