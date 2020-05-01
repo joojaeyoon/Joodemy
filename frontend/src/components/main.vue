@@ -2,28 +2,23 @@
   <v-container class="fill-height">
     <v-row>
       <v-col v-for="course in courses" :key="course.id" md="3">
-        <v-card
-          class="mx-auto"
-          max-width="400"
-          link
-          v-on:click="clickCourse(course.id)"
-        >
+        <v-card class="mx-auto" max-width="400" link v-on:click="clickCourse(course.id)">
           <v-img class="white--text align-end" height="200px" :src="course.img">
-            <v-card-title>{{ course.title }} </v-card-title>
+            <v-card-title>{{ course.title }}</v-card-title>
           </v-img>
 
-          <v-card-subtitle class="pb-0">{{
+          <v-card-subtitle class="pb-0">
+            {{
             course.instructor
-          }}</v-card-subtitle>
+            }}
+          </v-card-subtitle>
 
           <v-card-text class="text--primary">
-            <div>
-              {{ course.description }}
-            </div>
+            <div>{{ course.description }}</div>
           </v-card-text>
 
           <v-card-actions>
-            <v-btn color="orange" text> {{ course.price }}</v-btn>
+            <v-btn color="orange" text>{{ course.price }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -33,6 +28,7 @@
 
 <script>
 import router from "../router";
+import Axios from "axios";
 
 export default {
   name: "Main",
@@ -46,7 +42,7 @@ export default {
         description:
           "Learn Python like a Professional! Start from the basics and go all the way to creating your own applications and games!",
         instructor: "Joo",
-        price: "19.99$",
+        price: "19.99$"
       },
       {
         id: 2,
@@ -55,15 +51,23 @@ export default {
         description:
           "Learn Python like a Professional! Start from the basics and go all the way to creating your own applications and games!",
         instructor: "Joo",
-        price: "19.99$",
-      },
-    ],
+        price: "19.99$"
+      }
+    ]
   }),
 
   methods: {
     clickCourse: function(courseId) {
       router.push(`/courses/${courseId}`);
-    },
+    }
   },
+  created() {
+    Axios({
+      url: "http://localhost:8000/api/courses/",
+      method: "GET"
+    }).then(res => {
+      console.log(res.data);
+    });
+  }
 };
 </script>
