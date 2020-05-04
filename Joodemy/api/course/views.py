@@ -35,8 +35,6 @@ class CourseViewSet(viewsets.ModelViewSet):
         else:
             queryset = self.get_queryset()
 
-        print(queryset[0].img)
-
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
@@ -69,6 +67,12 @@ class CourseViewSet(viewsets.ModelViewSet):
         response["instructor"] = instructor.user.username
 
         return Response(response, status=status.HTTP_201_CREATED, headers=headers)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = CourseRetrieveSerializer(instance)
+
+        return Response(serializer.data)
 
 
 class ContentViewSet(viewsets.ModelViewSet):
