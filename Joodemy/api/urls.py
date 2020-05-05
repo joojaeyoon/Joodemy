@@ -19,5 +19,6 @@ app_name = "api"
 urlpatterns = [
     path("auth/registration", include(router.urls)),
     path("auth/", include("rest_auth.urls")),
+    path("subscribes/", SubscribeAPIView.as_view()),
     path("", include(course_router.urls)),
 ]

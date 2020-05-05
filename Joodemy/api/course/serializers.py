@@ -38,7 +38,7 @@ class CourseSerializer(serializers.ModelSerializer):
                   "description", "price", "img")
 
 
-class CourseRetrieveSerializer(serializers.ModelSerializer):
+class CourseRetrieveSerializer(CourseSerializer):
     """ 강의 디테일 시리얼라이저 """
 
     contents = ContentSerializer(many=True, read_only=True)

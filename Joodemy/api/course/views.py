@@ -1,13 +1,16 @@
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, views, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from accounts.models import Instructor, User
+from django.shortcuts import get_object_or_404
+
+from accounts.models import Instructor, User, Student
 from course.models import Content, Course, Review
 
-from ..utils import get_video_time
+from api.utils import get_video_time
 from .serializers import *
-from ..upload.serializers import *
+from api.upload.serializers import *
+from api.accounts.serializers import StudentSubscribeSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -143,3 +146,34 @@ class ReviewViewSet(viewsets.ModelViewSet):
         response["user"] = username
 
         return Response(response, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class SubscribeAPIView(generics.ListCreateAPIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+
+    def create(self, request, *args, **kwargs):
+
+        try:
+            student = get_object_or_404(Student, pk=request.data["student"])
+            course = get_object_or_404(Course, pk=request.data["course"])
+
+            student.courses.add(course)
+            student.save()
+        except:
+            return Response({"message": "wrong pk."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(request.data, status=status.HTTP_201_CREATED)
+
+    def list(self, request, *args, **kwargs):
+
+        try:
+
+            student = get_object_or_404(
+                Student, pk=request.query_params["student"])
+
+            serializer = StudentSubscribeSerializer(student)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response({"message": "Bad Request"}, status=status.HTTP_400_BAD_REQUEST)

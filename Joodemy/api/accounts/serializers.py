@@ -16,3 +16,9 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
 
         return user
+
+
+class StudentSubscribeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ("id", "courses")
