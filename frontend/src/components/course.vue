@@ -14,7 +14,7 @@
       <v-card width="80%" class="mr-3" elevation="12">
         <v-list two-line>
           <v-container class="pa-0" v-for="c in course.contents" :key="c.id">
-            <v-list-item link>
+            <v-list-item link @click="clickContent(c)">
               <v-list-item-avatar>
                 <v-icon>mdi-arrow-right-drop-circle-outline</v-icon>
               </v-list-item-avatar>
@@ -38,8 +38,8 @@
         <v-card-title>{{ course.price }} $</v-card-title>
 
         <v-card-actions class="flex-column" width="80%">
-          <v-btn width="100%" height="60" color="red">장바구니</v-btn>
-          <v-btn width="100%" height="60" class="ma-0 mt-3">구매하기</v-btn>
+          <v-btn v-if="!subscribed" width="100%" height="60" color="red" @click="subscribe">구독</v-btn>
+          <v-btn v-if="subscribed" width="100%" height="60" color="red">구독중</v-btn>
         </v-card-actions>
       </v-card>
     </v-container>
@@ -62,10 +62,17 @@ export default {
       price: "",
 
       contents: []
-    }
+    },
+    subscribed: false,
+    user: {}
   }),
   created() {
     const id = this.$route.params.id;
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    this.user = user;
+
     Axios({
       url: `${apiUrl}/api/courses/${id}/`,
       method: "GET"
@@ -74,6 +81,44 @@ export default {
         this.course = res.data;
       }
     });
+
+    Axios({
+      url: `${apiUrl}/api/subscribes/`,
+      method: "GET",
+      params: {
+        student: user.id
+      }
+    }).then(res => {
+      res.data.courses.map(c => {
+        if (c == id) {
+          this.subscribed = true;
+        }
+      });
+    });
+  },
+  methods: {
+    subscribe() {
+      const jwt = localStorage.getItem("token");
+      Axios.defaults.headers.common["Authorization"] = `jwt ${jwt}`;
+      Axios({
+        url: `${apiUrl}/api/subscribes/`,
+        method: "POST",
+        data: {
+          student: this.user.id,
+          course: this.course.id
+        }
+      }).then(res => {
+        console.log(res);
+        this.subscribed = true;
+      });
+    },
+    clickContent(content) {
+      if (this.subscribed) {
+        window.location.href = `/contents/${content.id}`;
+      } else {
+        // TODO error handling
+      }
+    }
   }
 };
 </script>

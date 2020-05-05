@@ -1,7 +1,7 @@
 <template>
   <v-container class="d-flex justify-center">
     <v-card class="pa-10" width="600">
-      <v-card-title>Create New Course</v-card-title>
+      <v-card-title>강의 생성</v-card-title>
       <v-form ref="createForm" v-model="valid" lazy-validation>
         <v-text-field
           v-model="title"

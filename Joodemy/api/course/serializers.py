@@ -8,7 +8,7 @@ class ContentCreateSerializer(serializers.ModelSerializer):
     """ 컨텐츠 생성 시리얼라이저 """
     class Meta:
         model = Content
-        fields = ("course", "title", "video", "time")
+        fields = ("id", "course", "title", "video", "time")
 
 
 class ContentSerializer(ContentCreateSerializer):

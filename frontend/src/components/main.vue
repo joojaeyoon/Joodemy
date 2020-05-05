@@ -8,7 +8,7 @@
             height="200px"
             :src="'https://joodemy.s3.ap-northeast-2.amazonaws.com/media/public/'+course.img"
           >
-            <v-card-title>{{ course.title }}</v-card-title>
+            <v-card-title class="body-2">{{ course.title }}</v-card-title>
           </v-img>
 
           <v-card-subtitle class="pb-0">

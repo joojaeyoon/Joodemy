@@ -22,7 +22,7 @@ export default new VueRouter({
       component: course,
     },
     {
-      path: "/videos/:id",
+      path: "/contents/:id",
       component: video,
     },
     {

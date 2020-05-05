@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-navigation-drawer v-model="drawer" app clipped>
+    <!-- <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
         <v-subheader class="mt-4 grey--text text--darken-1">카테고리</v-subheader>
         <v-list>
@@ -12,10 +12,10 @@
           </v-list-item>
         </v-list>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
 
     <v-app-bar app clipped-left color="indigo" dense>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
       <v-toolbar-title class="mr-12 align-center">
         <a class="title white--text" style="text-decoration: none !important" href="/">Joodemy</a>
       </v-toolbar-title>
